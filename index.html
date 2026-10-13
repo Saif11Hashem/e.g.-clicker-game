@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* Touch safety & disable selection */
         * {
             user-select: none;
             -webkit-user-select: none;
@@ -22,15 +23,26 @@
             touch-action: manipulation;
         }
 
+        /* Dynamic Fonts */
         .font-cartoon { font-family: 'Fredoka One', cursive; }
         .font-pixel { font-family: 'Press Start 2P', monospace; }
         .font-clean { font-family: 'Quicksand', sans-serif; }
         .font-rounded { font-family: 'Outfit', sans-serif; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 10px; }
+        /* Custom Scrollbar for store/stats lists */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
 
+        /* Theme Styles */
         .theme-daytime {
             --bg-sky-top: #38bdf8;
             --bg-sky-bottom: #bae6fd;
@@ -79,6 +91,7 @@
             overflow: hidden;
         }
 
+        /* Animated Cartoon Background Elements */
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.85);
@@ -109,6 +122,7 @@
             100% { transform: scale(1.1) rotate(15deg); opacity: 1; }
         }
 
+        /* Bouncy Button Styling */
         .btn-cartoon {
             transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.1s ease;
             box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.1);
@@ -118,18 +132,32 @@
             box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1) !important;
         }
 
+        /* Click Target Pulses */
         .click-target {
             filter: drop-shadow(0 12px 15px rgba(0,0,0,0.2));
             transition: transform 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
-        .click-target:hover { transform: scale(1.04) rotate(1deg); }
-        .click-target:active { transform: scale(0.88) rotate(-3deg) !important; }
+        .click-target:hover {
+            transform: scale(1.04) rotate(1deg);
+        }
+        .click-target:active {
+            transform: scale(0.88) rotate(-3deg) !important;
+        }
 
+        /* Floating Numbers Animation */
         @keyframes floatUpAndFade {
-            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-            50% { transform: translateY(-50px) scale(1.3) rotate(-5deg); }
-            100% { opacity: 0; transform: translateY(-100px) scale(0.8) rotate(5deg); }
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) scale(1.3) rotate(-5deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.8) rotate(5deg);
+            }
         }
         .floating-num {
             position: absolute;
@@ -140,14 +168,39 @@
             z-index: 50;
         }
 
-        .scene-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .scene-view {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
-            opacity: 0; pointer-events: none; transform: scale(0.92) translateY(20px);
-            display: flex; flex-direction: column;
+        /* Scene Transition Styles */
+        .scene-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
-        .scene-view.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+        .scene-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.92) translateY(20px);
+            display: flex;
+            flex-direction: column;
+        }
+        .scene-view.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Energy Frenzy Glow */
+        .frenzy-active {
+            animation: frenzyPulse 0.5s infinite alternate;
+        }
+        @keyframes frenzyPulse {
+            0% { filter: drop-shadow(0 0 15px #facc15) brightness(1); }
+            100% { filter: drop-shadow(0 0 35px #ef4444) brightness(1.25); }
+        }
     </style>
 </head>
 <body class="h-screen w-screen font-cartoon theme-daytime select-none flex flex-col justify-between">
@@ -176,7 +229,7 @@
             <div id="frenzy-progress" class="bg-gradient-to-r from-yellow-400 to-red-500 h-full rounded-full w-full transition-all duration-100"></div>
         </div>
 
-        <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-3 shadow-xl flex flex-col items-center justify-center relative">
+        <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-3 shadow-xl flex flex-col items-center justify-center relative transform transition-transform">
             <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Total Cookies</span>
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-cookie text-amber-500 text-3xl animate-bounce"></i>
@@ -319,9 +372,15 @@
                             <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">Target Shape</h3>
                             <div class="grid grid-cols-4 gap-2" id="shapes-selector"></div>
                         </div>
+
                         <div>
                             <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">World Theme</h3>
                             <div class="grid grid-cols-2 gap-2" id="themes-selector"></div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">Font Style</h3>
+                            <div class="grid grid-cols-2 gap-2" id="fonts-selector"></div>
                         </div>
                     </div>
                 </div>
@@ -356,9 +415,23 @@
 
                         <div class="bg-gradient-to-br from-amber-100 to-orange-100 p-4 rounded-xl border-2 border-amber-400 text-center space-y-2">
                             <h3 class="font-bold text-amber-800 text-base"><i class="fa-solid fa-meteor text-amber-600"></i> Cartoon Ascension</h3>
-                            <button id="btn-prestige" class="btn-cartoon w-full py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl disabled:opacity-50">
+                            <p class="text-xs text-slate-600">Reset progress for permanent <strong>+25% multiplier per ascension</strong>!</p>
+                            <div class="text-xs font-bold text-amber-700" id="prestige-req-text">Requires 10,000 Total Cookies</div>
+                            <button id="btn-prestige" class="btn-cartoon w-full py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
                                 ASCEND NOW
                             </button>
+                        </div>
+
+                        <div class="border-t pt-3 space-y-2">
+                            <h3 class="text-xs font-bold uppercase text-slate-500">Settings</h3>
+                            <div class="flex gap-2">
+                                <button id="btn-sound-toggle" class="btn-cartoon flex-1 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-volume-high"></i> Sound: ON
+                                </button>
+                                <button id="btn-reset" class="btn-cartoon flex-1 py-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset Game
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -367,12 +440,12 @@
         </div>
     </main>
 
-    <!-- Modal Simulation Area for Ads -->
+    <!-- Modal Ad Simulation & AdMob Bridge -->
     <div id="ad-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-4">
         <div class="bg-slate-800 border-4 border-purple-500 rounded-2xl p-6 text-center max-w-xs w-full text-white shadow-2xl relative">
             <div class="text-3xl mb-2 text-purple-400"><i class="fa-solid fa-tv animate-pulse"></i></div>
-            <h3 class="text-lg font-bold mb-1">Sponsored AdMob Video</h3>
-            <p class="text-xs text-slate-300 mb-4">AdMob ID: ca-app-pub-863228909645470~6488403138</p>
+            <h3 class="text-lg font-bold mb-1">Sponsored Video</h3>
+            <p class="text-xs text-slate-300 mb-4">AdMob ID: ca-app-pub-863228909645470/4613223845</p>
             <div class="w-full bg-slate-700 h-3 rounded-full overflow-hidden mb-3">
                 <div id="ad-progress-bar" class="bg-purple-500 h-full w-0 transition-all duration-300"></div>
             </div>
@@ -407,6 +480,7 @@
     </nav>
 
     <script>
+        /* --- GAME STATE & STORAGE --- */
         const DEFAULT_STATE = {
             cookies: 0,
             totalTaps: 0,
@@ -434,87 +508,18 @@
         let frenzyTimer = null;
         let currentScene = 'clicker';
 
-        class AudioSystem {
-            constructor() { this.ctx = null; }
-            init() {
-                if (!this.ctx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) this.ctx = new AudioContext();
-                }
-            }
-            playPop() {
-                if (!gameState.soundEnabled) return;
-                this.init();
-                if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                const freq = 400 + Math.random() * 200;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.08);
-            }
-            playBuy() {
-                if (!gameState.soundEnabled) return;
-                this.init();
-            }
-        }
-
-        const audio = new AudioSystem();
-
-        const UPGRADES_DATA = [
-            {
-                id: 'clickPower',
-                title: 'Click Power +1',
-                desc: 'Increases base tap value by +1',
-                icon: 'fa-hand-pointer',
-                iconColor: 'text-amber-500',
-                costFormula: (lvl) => Math.floor(10 * Math.pow(1.5, lvl)),
-                apply: () => { gameState.baseCpc += 1; }
-            },
-            {
-                id: 'multiplier',
-                title: 'Cookie Multiplier (2x)',
-                desc: 'Doubles all click rewards!',
-                icon: 'fa-bolt',
-                iconColor: 'text-yellow-500',
-                costFormula: (lvl) => Math.floor(100 * Math.pow(2.2, lvl)),
-                apply: () => { gameState.multiplier *= 2; }
-            },
-            {
-                id: 'autobot',
-                title: 'Auto-Tapper Bot',
-                desc: 'Automatically taps cookies every second',
-                icon: 'fa-robot',
-                iconColor: 'text-blue-500',
-                costFormula: (lvl) => Math.floor(50 * Math.pow(1.4, lvl)),
-                apply: () => { gameState.autoCps += 1; }
-            },
-            {
-                id: 'frenzy',
-                title: 'Frenzy Boost Duration',
-                desc: 'Increases frenzy time & power',
-                icon: 'fa-fire',
-                iconColor: 'text-red-500',
-                costFormula: (lvl) => Math.floor(200 * Math.pow(3.0, lvl)),
-                apply: () => {}
-            }
-        ];
-
+        /* --- ADMOB REWARDED AD INTEGRATION --- */
         function watchAdReward(rewardType) {
             const modal = document.getElementById('ad-modal');
             const progressBar = document.getElementById('ad-progress-bar');
             const timerText = document.getElementById('ad-timer');
             modal.classList.remove('hidden');
-            
+
             let timeLeft = 5;
             progressBar.style.width = '0%';
-            timerText.textContent = `${timeLeft} seconds remaining (AdMob Unit ID: ca-app-pub-863228909645470/4613223845)`;
+            timerText.textContent = `${timeLeft} seconds remaining`;
 
+            // إذا كان التطبيق يعمل داخل Web2Application وأتاح bridge لـ AdMob
             if (window.Android && typeof window.Android.showRewardedAd === 'function') {
                 window.Android.showRewardedAd(rewardType);
             }
@@ -552,16 +557,239 @@
             updateUI();
         }
 
-        function triggerFrenzy() {
-            frenzyActive = true;
-            document.getElementById('frenzy-badge').classList.remove('hidden');
-            if (frenzyTimer) clearTimeout(frenzyTimer);
-            frenzyTimer = setTimeout(() => {
-                frenzyActive = false;
-                document.getElementById('frenzy-badge').classList.add('hidden');
-            }, 10000);
+        /* --- WEB AUDIO API --- */
+        class AudioSystem {
+            constructor() { this.ctx = null; }
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+            }
+            playPop() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                const freq = 400 + Math.random() * 200;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.8, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+            playBuy() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(783.99, this.ctx.currentTime + 0.16);
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+            playAscend() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.5);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.5);
+            }
         }
 
+        const audio = new AudioSystem();
+
+        /* --- CALCULATED STATS --- */
+        function getPrestigeMultiplier() { return 1 + (gameState.prestigeLevel * 0.25); }
+        function getClickValue() {
+            const frenzyMult = frenzyActive ? 5 : 1;
+            return Math.floor((gameState.baseCpc) * gameState.multiplier * getPrestigeMultiplier() * frenzyMult);
+        }
+        function getCpsValue() { return Math.floor(gameState.autoCps * getPrestigeMultiplier()); }
+
+        /* --- UPGRADES DATA --- */
+        const UPGRADES_DATA = [
+            {
+                id: 'clickPower',
+                title: 'Click Power +1',
+                desc: 'Increases base tap value by +1',
+                icon: 'fa-hand-pointer',
+                iconColor: 'text-amber-500',
+                costFormula: (lvl) => Math.floor(10 * Math.pow(1.5, lvl)),
+                apply: () => { gameState.baseCpc += 1; }
+            },
+            {
+                id: 'multiplier',
+                title: 'Cookie Multiplier (2x)',
+                desc: 'Doubles all click rewards!',
+                icon: 'fa-bolt',
+                iconColor: 'text-yellow-500',
+                costFormula: (lvl) => Math.floor(100 * Math.pow(2.2, lvl)),
+                apply: () => { gameState.multiplier *= 2; }
+            },
+            {
+                id: 'autobot',
+                title: 'Auto-Tapper Bot',
+                desc: 'Automatically taps cookies every second',
+                icon: 'fa-robot',
+                iconColor: 'text-blue-500',
+                costFormula: (lvl) => Math.floor(50 * Math.pow(1.4, lvl)),
+                apply: () => { gameState.autoCps += 1; }
+            },
+            {
+                id: 'frenzy',
+                title: 'Frenzy Boost Duration',
+                desc: 'Increases frenzy power and frequency',
+                icon: 'fa-fire',
+                iconColor: 'text-red-500',
+                costFormula: (lvl) => Math.floor(200 * Math.pow(3.0, lvl)),
+                apply: () => {}
+            }
+        ];
+
+        /* --- SHAPES, THEMES & FONTS --- */
+        const SHAPES = [
+            { id: 'orb', name: 'Magic Orb', html: '<div class="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-tr from-amber-400 via-orange-500 to-yellow-300 rounded-full shadow-2xl flex items-center justify-center border-4 border-white animate-pulse"><i class="fa-solid fa-cookie-bite text-white text-6xl drop-shadow"></i></div>' },
+            { id: 'star', name: 'Golden Star', html: '<div class="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-tr from-yellow-300 via-amber-400 to-yellow-500 rounded-3xl shadow-2xl flex items-center justify-center border-4 border-white rotate-12"><i class="fa-solid fa-star text-white text-6xl drop-shadow"></i></div>' },
+            { id: 'gem', name: 'Ruby Gem', html: '<div class="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-tr from-red-500 via-rose-500 to-pink-400 rounded-2xl shadow-2xl flex items-center justify-center border-4 border-white rotate-45"><i class="fa-solid fa-gem text-white text-5xl -rotate-45 drop-shadow"></i></div>' },
+            { id: 'heart', name: 'Love Heart', html: '<div class="w-36 h-36 md:w-48 md:h-48 bg-gradient-to-tr from-pink-400 via-rose-500 to-red-500 rounded-full shadow-2xl flex items-center justify-center border-4 border-white"><i class="fa-solid fa-heart text-white text-6xl drop-shadow"></i></div>' }
+        ];
+
+        const THEMES = [
+            { id: 'daytime', name: 'Sunny Day', class: 'theme-daytime' },
+            { id: 'candy', name: 'Candy Land', class: 'theme-candy' },
+            { id: 'forest', name: 'Magic Forest', class: 'theme-forest' },
+            { id: 'cyber', name: 'Cyber Neon', class: 'theme-cyber' }
+        ];
+
+        const FONTS = [
+            { id: 'cartoon', name: 'Cartoon', class: 'font-cartoon' },
+            { id: 'pixel', name: 'Pixel 8-bit', class: 'font-pixel' },
+            { id: 'clean', name: 'Clean Modern', class: 'font-clean' },
+            { id: 'rounded', name: 'Rounded Bold', class: 'font-rounded' }
+        ];
+
+        /* --- RENDER CUSTOMIZATION SELECTORS --- */
+        function renderSelectors() {
+            // Shapes
+            const shapesContainer = document.getElementById('shapes-selector');
+            shapesContainer.innerHTML = '';
+            SHAPES.forEach(s => {
+                const btn = document.createElement('button');
+                btn.className = `p-2 rounded-xl border-2 flex flex-col items-center gap-1 btn-cartoon ${gameState.selectedShape === s.id ? 'bg-amber-100 border-amber-500 text-amber-700' : 'bg-white/80 border-slate-200 text-slate-600'}`;
+                btn.innerHTML = `<i class="fa-solid fa-shapes text-lg"></i><span class="text-[10px] font-bold">${s.name}</span>`;
+                btn.onclick = () => { gameState.selectedShape = s.id; saveGame(); updateTargetShape(); renderSelectors(); };
+                shapesContainer.appendChild(btn);
+            });
+
+            // Themes
+            const themesContainer = document.getElementById('themes-selector');
+            themesContainer.innerHTML = '';
+            THEMES.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = `p-2 rounded-xl border-2 flex items-center justify-center gap-2 btn-cartoon text-xs font-bold ${gameState.selectedTheme === t.id ? 'bg-amber-100 border-amber-500 text-amber-700' : 'bg-white/80 border-slate-200 text-slate-600'}`;
+                btn.innerHTML = `<span>${t.name}</span>`;
+                btn.onclick = () => {
+                    gameState.selectedTheme = t.id;
+                    document.body.className = `h-screen w-screen ${gameState.selectedFont === 'pixel' ? 'font-pixel' : gameState.selectedFont === 'clean' ? 'font-clean' : gameState.selectedFont === 'rounded' ? 'font-rounded' : 'font-cartoon'} ${t.class} select-none flex flex-col justify-between`;
+                    saveGame();
+                    renderSelectors();
+                };
+                themesContainer.appendChild(btn);
+            });
+
+            // Fonts
+            const fontsContainer = document.getElementById('fonts-selector');
+            fontsContainer.innerHTML = '';
+            FONTS.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = `p-2 rounded-xl border-2 flex items-center justify-center gap-2 btn-cartoon text-xs font-bold ${gameState.selectedFont === f.id ? 'bg-amber-100 border-amber-500 text-amber-700' : 'bg-white/80 border-slate-200 text-slate-600'}`;
+                btn.innerHTML = `<span class="${f.class}">${f.name}</span>`;
+                btn.onclick = () => {
+                    gameState.selectedFont = f.id;
+                    document.body.className = `h-screen w-screen ${f.class} ${THEMES.find(t=>t.id===gameState.selectedTheme)?.class || 'theme-daytime'} select-none flex flex-col justify-between`;
+                    saveGame();
+                    renderSelectors();
+                };
+                fontsContainer.appendChild(btn);
+            });
+        }
+
+        function updateTargetShape() {
+            const container = document.getElementById('target-shape-container');
+            const current = SHAPES.find(s => s.id === gameState.selectedShape) || SHAPES[0];
+            container.innerHTML = current.html;
+        }
+
+        /* --- RENDER UPGRADES STORE --- */
+        function renderUpgrades() {
+            const list = document.getElementById('upgrades-list');
+            list.innerHTML = '';
+
+            UPGRADES_DATA.forEach(upg => {
+                const data = gameState.upgrades[upg.id];
+                const cost = upg.costFormula(data.level);
+                const canBuy = gameState.cookies >= cost;
+
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between shadow-sm';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl ${upg.iconColor}">
+                            <i class="fa-solid ${upg.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800">${upg.title} <span class="text-xs text-amber-600 font-mono">(Lvl ${data.level})</span></div>
+                            <div class="text-xs text-slate-500">${upg.desc}</div>
+                        </div>
+                    </div>
+                    <button onclick="buyUpgrade('${upg.id}')" class="btn-cartoon px-3 py-2 rounded-xl text-xs font-bold flex flex-col items-center min-w-[70px] ${canBuy ? 'bg-amber-500 hover:bg-amber-600 text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}">
+                        <span>BUY</span>
+                        <span class="font-mono text-[10px]">${cost}</span>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function buyUpgrade(id) {
+            const upgDef = UPGRADES_DATA.find(u => u.id === id);
+            const upgState = gameState.upgrades[id];
+            const cost = upgDef.costFormula(upgState.level);
+
+            if (gameState.cookies >= cost) {
+                gameState.cookies -= cost;
+                upgState.level += 1;
+                audio.playBuy();
+                upgDef.apply();
+                saveGame();
+                updateUI();
+                renderUpgrades();
+            }
+        }
+
+        /* --- FLOATING NUMBERS --- */
         function showFloatingText(text, x, y, color = '#f59e0b') {
             const el = document.createElement('div');
             el.className = 'floating-num';
@@ -574,21 +802,59 @@
             setTimeout(() => el.remove(), 800);
         }
 
+        /* --- FRENZY TRIGGER --- */
+        function triggerFrenzy() {
+            frenzyActive = true;
+            document.getElementById('frenzy-badge').classList.remove('hidden');
+            document.getElementById('frenzy-bar-container').classList.remove('hidden');
+            const progress = document.getElementById('frenzy-progress');
+            progress.style.width = '100%';
+
+            let timeLeft = 10;
+            if (frenzyTimer) clearInterval(frenzyTimer);
+            
+            const interval = 100;
+            let elapsed = 0;
+            const totalDuration = 10000;
+
+            frenzyTimer = setInterval(() => {
+                elapsed += interval;
+                const pct = Math.max(0, 100 - (elapsed / totalDuration) * 100);
+                progress.style.width = `${pct}%`;
+
+                if (elapsed >= totalDuration) {
+                    clearInterval(frenzyTimer);
+                    frenzyActive = false;
+                    document.getElementById('frenzy-badge').classList.add('hidden');
+                    document.getElementById('frenzy-bar-container').classList.add('hidden');
+                }
+            }, interval);
+        }
+
+        /* --- SAVE & UI UPDATE --- */
         function saveGame() {
             localStorage.setItem('cartoon_clicker_save', JSON.stringify(gameState));
         }
 
         function updateUI() {
             document.getElementById('score-display').textContent = Math.floor(gameState.cookies).toLocaleString();
-            document.getElementById('cpc-display').textContent = (1 * gameState.multiplier * (1 + gameState.prestigeLevel * 0.25) * (frenzyActive ? 5 : 1));
-            document.getElementById('cps-display').textContent = (gameState.autoCps * (1 + gameState.prestigeLevel * 0.25));
+            document.getElementById('cpc-display').textContent = getClickValue();
+            document.getElementById('cps-display').textContent = getCpsValue();
             document.getElementById('stat-total-taps').textContent = gameState.totalTaps.toLocaleString();
             document.getElementById('stat-all-time').textContent = Math.floor(gameState.allTimeCookies).toLocaleString();
             document.getElementById('stat-prestige-level').textContent = gameState.prestigeLevel;
             document.getElementById('stat-prestige-boost').textContent = `+${gameState.prestigeLevel * 25}%`;
+            document.getElementById('prestige-multiplier-tag').textContent = `Bonus: +${gameState.prestigeLevel * 25}%`;
+
+            const prestigeBtn = document.getElementById('btn-prestige');
+            if (gameState.allTimeCookies >= 10000) {
+                prestigeBtn.removeAttribute('disabled');
+            } else {
+                prestigeBtn.setAttribute('disabled', 'true');
+            }
         }
 
-        // Navigation Tabs
+        /* --- EVENT LISTENERS --- */
         document.querySelectorAll('.nav-tab').forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetScene = btn.getAttribute('data-scene');
@@ -601,6 +867,8 @@
                 });
                 btn.classList.add('bg-amber-100', 'border', 'border-amber-300', 'text-amber-600');
                 btn.classList.remove('text-slate-500');
+
+                if (targetScene === 'upgrades') renderUpgrades();
             });
         });
 
@@ -608,26 +876,64 @@
         const clickTarget = document.getElementById('click-target');
         clickTarget.addEventListener('click', (e) => {
             audio.playPop();
-            const gain = 1 * gameState.multiplier * (1 + gameState.prestigeLevel * 0.25) * (frenzyActive ? 5 : 1);
-            gameState.cookies += gain;
-            gameState.allTimeCookies += gain;
+            const val = getClickValue();
+            gameState.cookies += val;
+            gameState.allTimeCookies += val;
             gameState.totalTaps += 1;
             
-            showFloatingText(`+${gain}`, e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, frenzyActive ? '#ef4444' : '#f59e0b');
+            showFloatingText(`+${val}`, e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, frenzyActive ? '#ef4444' : '#f59e0b');
             updateUI();
             saveGame();
         });
 
+        // Sound toggle
+        document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const btn = document.getElementById('btn-sound-toggle');
+            btn.innerHTML = `<i class="fa-solid fa-volume-${gameState.soundEnabled ? 'high' : 'xmark'}"></i> Sound: ${gameState.soundEnabled ? 'ON' : 'OFF'}`;
+            saveGame();
+        });
+
+        // Reset game
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset all progress?')) {
+                localStorage.removeItem('cartoon_clicker_save');
+                location.reload();
+            }
+        });
+
+        // Prestige
+        document.getElementById('btn-prestige').addEventListener('click', () => {
+            if (gameState.allTimeCookies >= 10000) {
+                audio.playAscend();
+                gameState.prestigeLevel += 1;
+                gameState.cookies = 0;
+                gameState.baseCpc = 1;
+                gameState.multiplier = 1;
+                gameState.autoCps = 0;
+                Object.keys(gameState.upgrades).forEach(k => gameState.upgrades[k].level = 0);
+                saveGame();
+                updateUI();
+                renderUpgrades();
+                alert(`Ascension successful! You are now level ${gameState.prestigeLevel} with a permanent boost!`);
+            }
+        });
+
         // Auto CPS loop
         setInterval(() => {
-            if (gameState.autoCps > 0) {
-                const earned = (gameState.autoCps * (1 + gameState.prestigeLevel * 0.25)) / 10;
+            const cps = getCpsValue();
+            if (cps > 0) {
+                const earned = cps / 10;
                 gameState.cookies += earned;
                 gameState.allTimeCookies += earned;
                 updateUI();
             }
         }, 100);
 
+        // Initial setup
+        updateTargetShape();
+        renderSelectors();
+        renderUpgrades();
         updateUI();
     </script>
 </body>
