@@ -152,7 +152,7 @@
 </head>
 <body class="h-screen w-screen font-cartoon theme-daytime select-none flex flex-col justify-between">
 
-    <!-- Background Animated Layer -->
+    <!-- Background Layer -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div class="cloud w-28 h-8 top-12" style="animation-duration: 22s; animation-delay: -2s;"></div>
         <div class="cloud w-36 h-10 top-28" style="animation-duration: 30s; animation-delay: -10s;"></div>
@@ -170,7 +170,7 @@
         </svg>
     </div>
 
-    <!-- Top Bar Header -->
+    <!-- Header Bar -->
     <header class="relative z-20 pt-4 px-4 max-w-md mx-auto w-full text-center">
         <div id="frenzy-bar-container" class="hidden w-full bg-black/20 rounded-full h-3 mb-2 p-0.5 border border-amber-300">
             <div id="frenzy-progress" class="bg-gradient-to-r from-yellow-400 to-red-500 h-full rounded-full w-full transition-all duration-100"></div>
@@ -180,7 +180,7 @@
             <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Total Cookies</span>
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-cookie text-amber-500 text-3xl animate-bounce"></i>
-                <span id="score-display" class="text-4xl font-extrabold text-amber-600 tracking-wide drop-shadow-sm">0</span>
+                <span id="score-display" class="text-4xl font-extrabold text-amber-600 tracking-wide">0</span>
             </div>
             
             <div class="flex items-center gap-4 mt-1 text-xs font-bold text-slate-600">
@@ -203,8 +203,6 @@
 
             <!-- SCENE 1: CLICKER GAMEPLAY VIEW -->
             <section id="scene-clicker" class="scene-view active items-center justify-center">
-                <div id="particle-canvas" class="absolute inset-0 pointer-events-none z-30"></div>
-
                 <div class="flex flex-col items-center justify-center h-full w-full relative">
                     <div id="click-target" class="click-target p-4 relative">
                         <div id="target-shape-container" class="w-52 h-52 md:w-64 md:h-64 flex items-center justify-center"></div>
@@ -226,7 +224,6 @@
                             Bonus: +0%
                         </span>
                     </div>
-
                     <div id="upgrades-list" class="flex-1 overflow-y-auto pr-1 space-y-3"></div>
                 </div>
             </section>
@@ -237,71 +234,52 @@
                     <h2 class="text-xl font-bold text-amber-600 mb-1 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
                         <i class="fa-solid fa-film text-purple-600"></i> Free Rewards (Ads)
                     </h2>
-                    <p class="text-xs text-slate-500 mb-3">Watch a short video to get instant power-ups!</p>
+                    <p class="text-xs text-slate-500 mb-3">Watch sponsor ads to claim instant power-ups!</p>
 
                     <div class="flex-1 overflow-y-auto pr-1 space-y-3">
-                        <!-- Ad Button 1: Power +1 -->
+                        <!-- Ad Buttons -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
-                                    <i class="fa-solid fa-hand-pointer"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-hand-pointer"></i></div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">+1 Click Power</div>
                                     <div class="text-xs text-slate-500">Permanent +1 base tap value</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('power')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-play"></i> WATCH
-                            </button>
+                            <button onclick="watchAdReward('power')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
                         </div>
 
-                        <!-- Ad Button 2: Double Cookies -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
-                                    <i class="fa-solid fa-coins"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-coins"></i></div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">Double Current Cookies</div>
-                                    <div class="text-xs text-slate-500">Instantly doubles your balance</div>
+                                    <div class="text-xs text-slate-500">Instantly doubles balance</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('double')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-play"></i> WATCH
-                            </button>
+                            <button onclick="watchAdReward('double')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
                         </div>
 
-                        <!-- Ad Button 3: 5x Frenzy Boost -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
-                                    <i class="fa-solid fa-fire text-red-500"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-fire text-red-500"></i></div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">10s 5x Frenzy</div>
-                                    <div class="text-xs text-slate-500">Triggers instant 5x frenzy boost</div>
+                                    <div class="text-xs text-slate-500">Triggers 5x frenzy boost</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('frenzy')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-play"></i> WATCH
-                            </button>
+                            <button onclick="watchAdReward('frenzy')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
                         </div>
 
-                        <!-- Ad Button 4: Auto-Bot Level -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
-                                    <i class="fa-solid fa-robot text-blue-500"></i>
-                                </div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-robot text-blue-500"></i></div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">+1 Auto Bot</div>
-                                    <div class="text-xs text-slate-500">Free +1 cookie/sec auto tapper</div>
+                                    <div class="text-xs text-slate-500">Free +1 cookie/sec tapper</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('autobot')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-circle-play"></i> WATCH
-                            </button>
+                            <button onclick="watchAdReward('autobot')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
                         </div>
                     </div>
                 </div>
@@ -310,31 +288,25 @@
             <!-- SCENE 4: CUSTOMIZATION -->
             <section id="scene-custom" class="scene-view">
                 <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-4 h-full flex flex-col shadow-xl">
-                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
-                        <i class="fa-solid fa-palette"></i> Customization
-                    </h2>
-
-                    <div class="flex-1 overflow-y-auto pr-1 space-y-4">
+                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200"><i class="fa-solid fa-palette"></i> Customization</h2>
+                    <div class="flex-1 overflow-y-auto space-y-4">
                         <div>
-                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">Target Shape</h3>
+                            <h3 class="text-xs font-bold text-slate-500 mb-2">Target Shape</h3>
                             <div class="grid grid-cols-4 gap-2" id="shapes-selector"></div>
                         </div>
                         <div>
-                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">World Theme</h3>
+                            <h3 class="text-xs font-bold text-slate-500 mb-2">World Theme</h3>
                             <div class="grid grid-cols-2 gap-2" id="themes-selector"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SCENE 5: STATS & ASCENSION -->
+            <!-- SCENE 5: STATS -->
             <section id="scene-stats" class="scene-view">
                 <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-4 h-full flex flex-col shadow-xl">
-                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-line"></i> Statistics & Prestige
-                    </h2>
-
-                    <div class="flex-1 overflow-y-auto pr-1 space-y-4">
+                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200"><i class="fa-solid fa-chart-line"></i> Statistics</h2>
+                    <div class="flex-1 overflow-y-auto space-y-4">
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
                                 <span class="text-slate-500 block">Total Taps</span>
@@ -344,21 +316,6 @@
                                 <span class="text-slate-500 block">All-Time Earned</span>
                                 <span id="stat-all-time" class="text-lg font-bold text-amber-700">0</span>
                             </div>
-                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
-                                <span class="text-slate-500 block">Ascension Level</span>
-                                <span id="stat-prestige-level" class="text-lg font-bold text-amber-700">0</span>
-                            </div>
-                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
-                                <span class="text-slate-500 block">Current Boost</span>
-                                <span id="stat-prestige-boost" class="text-lg font-bold text-amber-700">+0%</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-br from-amber-100 to-orange-100 p-4 rounded-xl border-2 border-amber-400 text-center space-y-2">
-                            <h3 class="font-bold text-amber-800 text-base"><i class="fa-solid fa-meteor text-amber-600"></i> Cartoon Ascension</h3>
-                            <button id="btn-prestige" class="btn-cartoon w-full py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl disabled:opacity-50">
-                                ASCEND NOW
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -367,187 +324,51 @@
         </div>
     </main>
 
-    <!-- Modal Simulation Area for Ads -->
-    <div id="ad-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-4">
-        <div class="bg-slate-800 border-4 border-purple-500 rounded-2xl p-6 text-center max-w-xs w-full text-white shadow-2xl relative">
-            <div class="text-3xl mb-2 text-purple-400"><i class="fa-solid fa-tv animate-pulse"></i></div>
-            <h3 class="text-lg font-bold mb-1">Sponsored AdMob Video</h3>
-            <p class="text-xs text-slate-300 mb-4">AdMob ID: ca-app-pub-863228909645470~6488403138</p>
-            <div class="w-full bg-slate-700 h-3 rounded-full overflow-hidden mb-3">
-                <div id="ad-progress-bar" class="bg-purple-500 h-full w-0 transition-all duration-300"></div>
-            </div>
-            <span id="ad-timer" class="text-xs font-mono text-purple-300">5 seconds remaining</span>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation Tabs -->
+    <!-- Bottom Nav -->
     <nav class="relative z-20 max-w-md mx-auto w-full px-4 pb-4">
         <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-1.5 shadow-xl flex justify-around items-center">
-            <button data-scene="clicker" class="nav-tab active-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-amber-600 bg-amber-100 border border-amber-300">
-                <i class="fa-solid fa-hand-pointer text-lg mb-0.5"></i>
-                <span>Tap</span>
+            <button data-scene="clicker" class="nav-tab active-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-amber-600 bg-amber-100 border border-amber-300">
+                <i class="fa-solid fa-hand-pointer text-lg"></i><span>Tap</span>
             </button>
-            <button data-scene="upgrades" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
-                <i class="fa-solid fa-rocket text-lg mb-0.5"></i>
-                <span>Store</span>
+            <button data-scene="upgrades" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
+                <i class="fa-solid fa-rocket text-lg"></i><span>Store</span>
             </button>
-            <button data-scene="ads" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-purple-600 hover:text-purple-700">
-                <i class="fa-solid fa-gift text-lg mb-0.5"></i>
-                <span>Free Ads</span>
+            <button data-scene="ads" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-purple-600">
+                <i class="fa-solid fa-gift text-lg"></i><span>Free Ads</span>
             </button>
-            <button data-scene="custom" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
-                <i class="fa-solid fa-wand-magic-sparkles text-lg mb-0.5"></i>
-                <span>Style</span>
+            <button data-scene="custom" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
+                <i class="fa-solid fa-wand-magic-sparkles text-lg"></i><span>Style</span>
             </button>
-            <button data-scene="stats" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
-                <i class="fa-solid fa-chart-pie text-lg mb-0.5"></i>
-                <span>Stats</span>
+            <button data-scene="stats" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
+                <i class="fa-solid fa-chart-pie text-lg"></i><span>Stats</span>
             </button>
         </div>
     </nav>
 
     <script>
         const DEFAULT_STATE = {
-            cookies: 0,
-            totalTaps: 0,
-            allTimeCookies: 0,
-            baseCpc: 1,
-            multiplier: 1,
-            autoCps: 0,
-            prestigeLevel: 0,
-            soundEnabled: true,
-            selectedShape: 'orb',
-            selectedTheme: 'daytime',
-            selectedFont: 'cartoon',
+            cookies: 0, totalTaps: 0, allTimeCookies: 0, baseCpc: 1, multiplier: 1, autoCps: 0, prestigeLevel: 0, soundEnabled: true, selectedShape: 'orb', selectedTheme: 'daytime',
             upgrades: {
-                clickPower: { level: 0, basePrice: 10, costMult: 1.5 },
-                multiplier: { level: 0, basePrice: 100, costMult: 2.2 },
-                autobot: { level: 0, basePrice: 50, costMult: 1.4 },
-                frenzy: { level: 0, basePrice: 200, costMult: 3.0 }
+                clickPower: { level: 0, basePrice: 10 },
+                multiplier: { level: 0, basePrice: 100 },
+                autobot: { level: 0, basePrice: 50 }
             }
         };
 
         let gameState = JSON.parse(localStorage.getItem('cartoon_clicker_save')) || DEFAULT_STATE;
-        gameState = { ...DEFAULT_STATE, ...gameState, upgrades: { ...DEFAULT_STATE.upgrades, ...(gameState.upgrades || {}) } };
-
         let frenzyActive = false;
-        let frenzyTimer = null;
-        let currentScene = 'clicker';
-
-        class AudioSystem {
-            constructor() { this.ctx = null; }
-            init() {
-                if (!this.ctx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) this.ctx = new AudioContext();
-                }
-            }
-            playPop() {
-                if (!gameState.soundEnabled) return;
-                this.init();
-                if (!this.ctx) return;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.type = 'sine';
-                const freq = 400 + Math.random() * 200;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.08);
-            }
-            playBuy() {
-                if (!gameState.soundEnabled) return;
-                this.init();
-            }
-        }
-
-        const audio = new AudioSystem();
-
-        const UPGRADES_DATA = [
-            {
-                id: 'clickPower',
-                title: 'Click Power +1',
-                desc: 'Increases base tap value by +1',
-                icon: 'fa-hand-pointer',
-                iconColor: 'text-amber-500',
-                costFormula: (lvl) => Math.floor(10 * Math.pow(1.5, lvl)),
-                apply: () => { gameState.baseCpc += 1; }
-            },
-            {
-                id: 'multiplier',
-                title: 'Cookie Multiplier (2x)',
-                desc: 'Doubles all click rewards!',
-                icon: 'fa-bolt',
-                iconColor: 'text-yellow-500',
-                costFormula: (lvl) => Math.floor(100 * Math.pow(2.2, lvl)),
-                apply: () => { gameState.multiplier *= 2; }
-            },
-            {
-                id: 'autobot',
-                title: 'Auto-Tapper Bot',
-                desc: 'Automatically taps cookies every second',
-                icon: 'fa-robot',
-                iconColor: 'text-blue-500',
-                costFormula: (lvl) => Math.floor(50 * Math.pow(1.4, lvl)),
-                apply: () => { gameState.autoCps += 1; }
-            },
-            {
-                id: 'frenzy',
-                title: 'Frenzy Boost Duration',
-                desc: 'Increases frenzy time & power',
-                icon: 'fa-fire',
-                iconColor: 'text-red-500',
-                costFormula: (lvl) => Math.floor(200 * Math.pow(3.0, lvl)),
-                apply: () => {}
-            }
-        ];
 
         function watchAdReward(rewardType) {
-            const modal = document.getElementById('ad-modal');
-            const progressBar = document.getElementById('ad-progress-bar');
-            const timerText = document.getElementById('ad-timer');
-            modal.classList.remove('hidden');
-            
-            let timeLeft = 5;
-            progressBar.style.width = '0%';
-            timerText.textContent = `${timeLeft} seconds remaining (AdMob Unit ID: ca-app-pub-863228909645470/4613223845)`;
-
-            if (window.Android && typeof window.Android.showRewardedAd === 'function') {
-                window.Android.showRewardedAd(rewardType);
-            }
-
-            const adInterval = setInterval(() => {
-                timeLeft--;
-                progressBar.style.width = `${((5 - timeLeft) / 5) * 100}%`;
-                timerText.textContent = `${timeLeft} seconds remaining`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(adInterval);
-                    modal.classList.add('hidden');
-                    grantAdReward(rewardType);
-                }
-            }, 1000);
+            // فتح رابط الإعلان مباشرة عند الضغط على الزر ليحسب الأرباح ويمنح الترقية
+            window.open("https://uplcm.com/4/12021279", "_blank");
+            grantReward(rewardType);
         }
 
-        function grantAdReward(type) {
-            audio.playBuy();
-            if (type === 'power') {
-                gameState.baseCpc += 1;
-                showFloatingText('+1 Click Power!', window.innerWidth / 2, window.innerHeight / 2, '#a855f7');
-            } else if (type === 'double') {
-                const added = Math.max(1, gameState.cookies);
-                gameState.cookies += added;
-                gameState.allTimeCookies += added;
-                showFloatingText('+' + added + ' Cookies!', window.innerWidth / 2, window.innerHeight / 2, '#f59e0b');
-            } else if (type === 'frenzy') {
-                triggerFrenzy();
-            } else if (type === 'autobot') {
-                gameState.autoCps += 1;
-                showFloatingText('+1 Auto Bot!', window.innerWidth / 2, window.innerHeight / 2, '#3b82f6');
-            }
+        function grantReward(type) {
+            if (type === 'power') gameState.baseCpc += 1;
+            else if (type === 'double') gameState.cookies *= 2;
+            else if (type === 'frenzy') triggerFrenzy();
+            else if (type === 'autobot') gameState.autoCps += 1;
             saveGame();
             updateUI();
         }
@@ -555,75 +376,43 @@
         function triggerFrenzy() {
             frenzyActive = true;
             document.getElementById('frenzy-badge').classList.remove('hidden');
-            if (frenzyTimer) clearTimeout(frenzyTimer);
-            frenzyTimer = setTimeout(() => {
+            setTimeout(() => {
                 frenzyActive = false;
                 document.getElementById('frenzy-badge').classList.add('hidden');
             }, 10000);
         }
 
-        function showFloatingText(text, x, y, color = '#f59e0b') {
-            const el = document.createElement('div');
-            el.className = 'floating-num';
-            el.textContent = text;
-            el.style.left = `${x}px`;
-            el.style.top = `${y}px`;
-            el.style.color = color;
-            el.style.fontSize = '24px';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 800);
-        }
-
-        function saveGame() {
-            localStorage.setItem('cartoon_clicker_save', JSON.stringify(gameState));
-        }
+        function saveGame() { localStorage.setItem('cartoon_clicker_save', JSON.stringify(gameState)); }
 
         function updateUI() {
-            document.getElementById('score-display').textContent = Math.floor(gameState.cookies).toLocaleString();
-            document.getElementById('cpc-display').textContent = (1 * gameState.multiplier * (1 + gameState.prestigeLevel * 0.25) * (frenzyActive ? 5 : 1));
-            document.getElementById('cps-display').textContent = (gameState.autoCps * (1 + gameState.prestigeLevel * 0.25));
-            document.getElementById('stat-total-taps').textContent = gameState.totalTaps.toLocaleString();
-            document.getElementById('stat-all-time').textContent = Math.floor(gameState.allTimeCookies).toLocaleString();
-            document.getElementById('stat-prestige-level').textContent = gameState.prestigeLevel;
-            document.getElementById('stat-prestige-boost').textContent = `+${gameState.prestigeLevel * 25}%`;
+            document.getElementById('score-display').textContent = Math.floor(gameState.cookies);
+            document.getElementById('cpc-display').textContent = gameState.baseCpc * gameState.multiplier * (frenzyActive ? 5 : 1);
+            document.getElementById('cps-display').textContent = gameState.autoCps;
+            document.getElementById('stat-total-taps').textContent = gameState.totalTaps;
+            document.getElementById('stat-all-time').textContent = Math.floor(gameState.allTimeCookies);
         }
 
-        // Navigation Tabs
         document.querySelectorAll('.nav-tab').forEach(btn => {
             btn.addEventListener('click', () => {
-                const targetScene = btn.getAttribute('data-scene');
+                const scene = btn.getAttribute('data-scene');
                 document.querySelectorAll('.scene-view').forEach(s => s.classList.remove('active'));
-                document.getElementById(`scene-${targetScene}`).classList.add('active');
-                
-                document.querySelectorAll('.nav-tab').forEach(t => {
-                    t.classList.remove('bg-amber-100', 'border', 'border-amber-300', 'text-amber-600');
-                    t.classList.add('text-slate-500');
-                });
-                btn.classList.add('bg-amber-100', 'border', 'border-amber-300', 'text-amber-600');
-                btn.classList.remove('text-slate-500');
+                document.getElementById(`scene-${scene}`).classList.add('active');
             });
         });
 
-        // Click target interaction
-        const clickTarget = document.getElementById('click-target');
-        clickTarget.addEventListener('click', (e) => {
-            audio.playPop();
-            const gain = 1 * gameState.multiplier * (1 + gameState.prestigeLevel * 0.25) * (frenzyActive ? 5 : 1);
+        document.getElementById('click-target').addEventListener('click', () => {
+            const gain = gameState.baseCpc * gameState.multiplier * (frenzyActive ? 5 : 1);
             gameState.cookies += gain;
             gameState.allTimeCookies += gain;
             gameState.totalTaps += 1;
-            
-            showFloatingText(`+${gain}`, e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2, frenzyActive ? '#ef4444' : '#f59e0b');
             updateUI();
             saveGame();
         });
 
-        // Auto CPS loop
         setInterval(() => {
             if (gameState.autoCps > 0) {
-                const earned = (gameState.autoCps * (1 + gameState.prestigeLevel * 0.25)) / 10;
-                gameState.cookies += earned;
-                gameState.allTimeCookies += earned;
+                gameState.cookies += gameState.autoCps / 10;
+                gameState.allTimeCookies += gameState.autoCps / 10;
                 updateUI();
             }
         }, 100);
