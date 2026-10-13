@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* Touch safety & disable selection */
         * {
             user-select: none;
             -webkit-user-select: none;
@@ -22,15 +23,26 @@
             touch-action: manipulation;
         }
 
+        /* Dynamic Fonts */
         .font-cartoon { font-family: 'Fredoka One', cursive; }
         .font-pixel { font-family: 'Press Start 2P', monospace; }
         .font-clean { font-family: 'Quicksand', sans-serif; }
         .font-rounded { font-family: 'Outfit', sans-serif; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.4); border-radius: 10px; }
+        /* Custom Scrollbar for store/stats lists */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
 
+        /* Theme Styles */
         .theme-daytime {
             --bg-sky-top: #38bdf8;
             --bg-sky-bottom: #bae6fd;
@@ -79,6 +91,7 @@
             overflow: hidden;
         }
 
+        /* Animated Cartoon Background Elements */
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.85);
@@ -109,6 +122,7 @@
             100% { transform: scale(1.1) rotate(15deg); opacity: 1; }
         }
 
+        /* Bouncy Button Styling */
         .btn-cartoon {
             transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.1s ease;
             box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.1);
@@ -118,18 +132,32 @@
             box-shadow: 0 2px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1) !important;
         }
 
+        /* Click Target Pulses */
         .click-target {
             filter: drop-shadow(0 12px 15px rgba(0,0,0,0.2));
             transition: transform 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
-        .click-target:hover { transform: scale(1.04) rotate(1deg); }
-        .click-target:active { transform: scale(0.88) rotate(-3deg) !important; }
+        .click-target:hover {
+            transform: scale(1.04) rotate(1deg);
+        }
+        .click-target:active {
+            transform: scale(0.88) rotate(-3deg) !important;
+        }
 
+        /* Floating Numbers Animation */
         @keyframes floatUpAndFade {
-            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-            50% { transform: translateY(-50px) scale(1.3) rotate(-5deg); }
-            100% { opacity: 0; transform: translateY(-100px) scale(0.8) rotate(5deg); }
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-50px) scale(1.3) rotate(-5deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.8) rotate(5deg);
+            }
         }
         .floating-num {
             position: absolute;
@@ -140,19 +168,50 @@
             z-index: 50;
         }
 
-        .scene-container { position: relative; width: 100%; height: 100%; overflow: hidden; }
-        .scene-view {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
-            opacity: 0; pointer-events: none; transform: scale(0.92) translateY(20px);
-            display: flex; flex-direction: column;
+        /* Scene Transition Styles */
+        .scene-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
-        .scene-view.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+        .scene-view {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.92) translateY(20px);
+            display: flex;
+            flex-direction: column;
+        }
+        .scene-view.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+        .scene-view.slide-left {
+            transform: translateX(-100%) scale(0.95);
+        }
+        .scene-view.slide-right {
+            transform: translateX(100%) scale(0.95);
+        }
+
+        /* Energy Frenzy Glow */
+        .frenzy-active {
+            animation: frenzyPulse 0.5s infinite alternate;
+        }
+        @keyframes frenzyPulse {
+            0% { filter: drop-shadow(0 0 15px #facc15) brightness(1); }
+            100% { filter: drop-shadow(0 0 35px #ef4444) brightness(1.25); }
+        }
     </style>
 </head>
 <body class="h-screen w-screen font-cartoon theme-daytime select-none flex flex-col justify-between">
 
-    <!-- Background Layer -->
+    <!-- Background Animated Layer -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div class="cloud w-28 h-8 top-12" style="animation-duration: 22s; animation-delay: -2s;"></div>
         <div class="cloud w-36 h-10 top-28" style="animation-duration: 30s; animation-delay: -10s;"></div>
@@ -170,17 +229,17 @@
         </svg>
     </div>
 
-    <!-- Header Bar -->
+    <!-- Top Bar Header -->
     <header class="relative z-20 pt-4 px-4 max-w-md mx-auto w-full text-center">
         <div id="frenzy-bar-container" class="hidden w-full bg-black/20 rounded-full h-3 mb-2 p-0.5 border border-amber-300">
             <div id="frenzy-progress" class="bg-gradient-to-r from-yellow-400 to-red-500 h-full rounded-full w-full transition-all duration-100"></div>
         </div>
 
-        <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-3 shadow-xl flex flex-col items-center justify-center relative">
+        <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-3 shadow-xl flex flex-col items-center justify-center relative transform transition-transform">
             <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Total Cookies</span>
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-cookie text-amber-500 text-3xl animate-bounce"></i>
-                <span id="score-display" class="text-4xl font-extrabold text-amber-600 tracking-wide">0</span>
+                <span id="score-display" class="text-4xl font-extrabold text-amber-600 tracking-wide drop-shadow-sm">0</span>
             </div>
             
             <div class="flex items-center gap-4 mt-1 text-xs font-bold text-slate-600">
@@ -203,6 +262,8 @@
 
             <!-- SCENE 1: CLICKER GAMEPLAY VIEW -->
             <section id="scene-clicker" class="scene-view active items-center justify-center">
+                <div id="particle-canvas" class="absolute inset-0 pointer-events-none z-30"></div>
+
                 <div class="flex flex-col items-center justify-center h-full w-full relative">
                     <div id="click-target" class="click-target p-4 relative">
                         <div id="target-shape-container" class="w-52 h-52 md:w-64 md:h-64 flex items-center justify-center"></div>
@@ -224,11 +285,12 @@
                             Bonus: +0%
                         </span>
                     </div>
+
                     <div id="upgrades-list" class="flex-1 overflow-y-auto pr-1 space-y-3"></div>
                 </div>
             </section>
 
-            <!-- SCENE 3: REWARDED ADS SECTION -->
+            <!-- SCENE 3: REAL REWARDED ADS SECTION (MONETAG INTEGRATED) -->
             <section id="scene-ads" class="scene-view">
                 <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-4 h-full flex flex-col shadow-xl">
                     <h2 class="text-xl font-bold text-amber-600 mb-1 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
@@ -237,49 +299,68 @@
                     <p class="text-xs text-slate-500 mb-3">Watch sponsor ads to claim instant power-ups!</p>
 
                     <div class="flex-1 overflow-y-auto pr-1 space-y-3">
-                        <!-- Ad Buttons -->
+                        <!-- Ad Button 1: Power +1 -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-hand-pointer"></i></div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
+                                    <i class="fa-solid fa-hand-pointer"></i>
+                                </div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">+1 Click Power</div>
                                     <div class="text-xs text-slate-500">Permanent +1 base tap value</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('power')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
+                            <button onclick="watchAdReward('power')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-circle-play"></i> WATCH
+                            </button>
                         </div>
 
+                        <!-- Ad Button 2: Double Cookies -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-coins"></i></div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
+                                    <i class="fa-solid fa-coins"></i>
+                                </div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">Double Current Cookies</div>
-                                    <div class="text-xs text-slate-500">Instantly doubles balance</div>
+                                    <div class="text-xs text-slate-500">Instantly doubles your balance</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('double')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
+                            <button onclick="watchAdReward('double')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-circle-play"></i> WATCH
+                            </button>
                         </div>
 
+                        <!-- Ad Button 3: 5x Frenzy Boost -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-fire text-red-500"></i></div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
+                                    <i class="fa-solid fa-fire text-red-500"></i>
+                                </div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">10s 5x Frenzy</div>
-                                    <div class="text-xs text-slate-500">Triggers 5x frenzy boost</div>
+                                    <div class="text-xs text-slate-500">Triggers instant 5x frenzy boost</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('frenzy')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
+                            <button onclick="watchAdReward('frenzy')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-circle-play"></i> WATCH
+                            </button>
                         </div>
 
+                        <!-- Ad Button 4: Auto-Bot Level -->
                         <div class="p-3 bg-white/90 rounded-xl border-2 border-amber-300 flex items-center justify-between">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600"><i class="fa-solid fa-robot text-blue-500"></i></div>
+                                <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl text-purple-600">
+                                    <i class="fa-solid fa-robot text-blue-500"></i>
+                                </div>
                                 <div>
                                     <div class="font-bold text-sm text-slate-800">+1 Auto Bot</div>
-                                    <div class="text-xs text-slate-500">Free +1 cookie/sec tapper</div>
+                                    <div class="text-xs text-slate-500">Free +1 cookie/sec auto tapper</div>
                                 </div>
                             </div>
-                            <button onclick="watchAdReward('autobot')" class="btn-cartoon px-3 py-2 bg-purple-600 text-white rounded-xl text-xs font-bold"><i class="fa-solid fa-circle-play"></i> WATCH</button>
+                            <button onclick="watchAdReward('autobot')" class="btn-cartoon px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-circle-play"></i> WATCH
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -288,25 +369,37 @@
             <!-- SCENE 4: CUSTOMIZATION -->
             <section id="scene-custom" class="scene-view">
                 <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-4 h-full flex flex-col shadow-xl">
-                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200"><i class="fa-solid fa-palette"></i> Customization</h2>
-                    <div class="flex-1 overflow-y-auto space-y-4">
+                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
+                        <i class="fa-solid fa-palette"></i> Customization
+                    </h2>
+
+                    <div class="flex-1 overflow-y-auto pr-1 space-y-4">
                         <div>
-                            <h3 class="text-xs font-bold text-slate-500 mb-2">Target Shape</h3>
+                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">Target Shape</h3>
                             <div class="grid grid-cols-4 gap-2" id="shapes-selector"></div>
                         </div>
+
                         <div>
-                            <h3 class="text-xs font-bold text-slate-500 mb-2">World Theme</h3>
+                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">World Theme</h3>
                             <div class="grid grid-cols-2 gap-2" id="themes-selector"></div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xs font-bold uppercase text-slate-500 mb-2">Font Style</h3>
+                            <div class="grid grid-cols-2 gap-2" id="fonts-selector"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SCENE 5: STATS -->
+            <!-- SCENE 5: STATS & ASCENSION -->
             <section id="scene-stats" class="scene-view">
                 <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-4 h-full flex flex-col shadow-xl">
-                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200"><i class="fa-solid fa-chart-line"></i> Statistics</h2>
-                    <div class="flex-1 overflow-y-auto space-y-4">
+                    <h2 class="text-xl font-bold text-amber-600 mb-3 pb-2 border-b-2 border-amber-200 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line"></i> Statistics & Prestige
+                    </h2>
+
+                    <div class="flex-1 overflow-y-auto pr-1 space-y-4">
                         <div class="grid grid-cols-2 gap-2 text-xs">
                             <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
                                 <span class="text-slate-500 block">Total Taps</span>
@@ -316,6 +409,35 @@
                                 <span class="text-slate-500 block">All-Time Earned</span>
                                 <span id="stat-all-time" class="text-lg font-bold text-amber-700">0</span>
                             </div>
+                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                                <span class="text-slate-500 block">Ascension Level</span>
+                                <span id="stat-prestige-level" class="text-lg font-bold text-amber-700">0</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+                                <span class="text-slate-500 block">Current Boost</span>
+                                <span id="stat-prestige-boost" class="text-lg font-bold text-amber-700">+0%</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-amber-100 to-orange-100 p-4 rounded-xl border-2 border-amber-400 text-center space-y-2">
+                            <h3 class="font-bold text-amber-800 text-base"><i class="fa-solid fa-meteor text-amber-600"></i> Cartoon Ascension</h3>
+                            <p class="text-xs text-slate-600">Reset progress for permanent <strong>+25% multiplier per ascension</strong>!</p>
+                            <div class="text-xs font-bold text-amber-700" id="prestige-req-text">Requires 10,000 Total Cookies</div>
+                            <button id="btn-prestige" class="btn-cartoon w-full py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                ASCEND NOW
+                            </button>
+                        </div>
+
+                        <div class="border-t pt-3 space-y-2">
+                            <h3 class="text-xs font-bold uppercase text-slate-500">Settings</h3>
+                            <div class="flex gap-2">
+                                <button id="btn-sound-toggle" class="btn-cartoon flex-1 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-volume-high"></i> Sound: ON
+                                </button>
+                                <button id="btn-reset" class="btn-cartoon flex-1 py-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset Game
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -324,100 +446,556 @@
         </div>
     </main>
 
-    <!-- Bottom Nav -->
+    <!-- Bottom Navigation Tabs -->
     <nav class="relative z-20 max-w-md mx-auto w-full px-4 pb-4">
         <div class="bg-[var(--panel-bg)] backdrop-blur-md border-4 border-[var(--panel-border)] rounded-2xl p-1.5 shadow-xl flex justify-around items-center">
-            <button data-scene="clicker" class="nav-tab active-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-amber-600 bg-amber-100 border border-amber-300">
-                <i class="fa-solid fa-hand-pointer text-lg"></i><span>Tap</span>
+            <button data-scene="clicker" class="nav-tab active-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-amber-600 bg-amber-100 border border-amber-300">
+                <i class="fa-solid fa-hand-pointer text-lg mb-0.5"></i>
+                <span>Tap</span>
             </button>
-            <button data-scene="upgrades" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
-                <i class="fa-solid fa-rocket text-lg"></i><span>Store</span>
+            <button data-scene="upgrades" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
+                <i class="fa-solid fa-rocket text-lg mb-0.5"></i>
+                <span>Store</span>
             </button>
-            <button data-scene="ads" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-purple-600">
-                <i class="fa-solid fa-gift text-lg"></i><span>Free Ads</span>
+            <button data-scene="ads" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-purple-600 hover:text-purple-700">
+                <i class="fa-solid fa-gift text-lg mb-0.5"></i>
+                <span>Free Ads</span>
             </button>
-            <button data-scene="custom" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
-                <i class="fa-solid fa-wand-magic-sparkles text-lg"></i><span>Style</span>
+            <button data-scene="custom" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
+                <i class="fa-solid fa-wand-magic-sparkles text-lg mb-0.5"></i>
+                <span>Style</span>
             </button>
-            <button data-scene="stats" class="nav-tab btn-cartoon flex-1 py-2 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500">
-                <i class="fa-solid fa-chart-pie text-lg"></i><span>Stats</span>
+            <button data-scene="stats" class="nav-tab btn-cartoon flex-1 py-2 px-1 rounded-xl flex flex-col items-center text-xs font-bold text-slate-500 hover:text-amber-600">
+                <i class="fa-solid fa-chart-pie text-lg mb-0.5"></i>
+                <span>Stats</span>
             </button>
         </div>
     </nav>
 
     <script>
+        /* --- GAME STATE & STORAGE --- */
         const DEFAULT_STATE = {
-            cookies: 0, totalTaps: 0, allTimeCookies: 0, baseCpc: 1, multiplier: 1, autoCps: 0, prestigeLevel: 0, soundEnabled: true, selectedShape: 'orb', selectedTheme: 'daytime',
+            cookies: 0,
+            totalTaps: 0,
+            allTimeCookies: 0,
+            baseCpc: 1,
+            multiplier: 1,
+            autoCps: 0,
+            prestigeLevel: 0,
+            soundEnabled: true,
+            selectedShape: 'orb',
+            selectedTheme: 'daytime',
+            selectedFont: 'cartoon',
             upgrades: {
-                clickPower: { level: 0, basePrice: 10 },
-                multiplier: { level: 0, basePrice: 100 },
-                autobot: { level: 0, basePrice: 50 }
+                clickPower: { level: 0, basePrice: 10, costMult: 1.5 },
+                multiplier: { level: 0, basePrice: 100, costMult: 2.2 },
+                autobot: { level: 0, basePrice: 50, costMult: 1.4 },
+                frenzy: { level: 0, basePrice: 200, costMult: 3.0 }
             }
         };
 
         let gameState = JSON.parse(localStorage.getItem('cartoon_clicker_save')) || DEFAULT_STATE;
+        gameState = { ...DEFAULT_STATE, ...gameState, upgrades: { ...DEFAULT_STATE.upgrades, ...(gameState.upgrades || {}) } };
+
         let frenzyActive = false;
+        let frenzyTimer = null;
+        let currentScene = 'clicker';
+
+        /* --- MONETAG DIRECT LINK CONFIGURATION --- */
+        const REAL_AD_URL = "https://uplcm.com/4/12021279";
 
         function watchAdReward(rewardType) {
-            // فتح رابط الإعلان مباشرة عند الضغط على الزر ليحسب الأرباح ويمنح الترقية
-            window.open("https://uplcm.com/4/12021279", "_blank");
-            grantReward(rewardType);
+            // 1. تطبيق وتعديل قيمة المكافأة داخل حفظ اللعبة أولاً
+            applyReward(rewardType);
+
+            // 2. توجيه مباشر ومضمون إلى رابط الإعان عبر window.location.href
+            // التوجيه يضمن فتح الإعلان حتى داخل تطبيقات الـ APK التي تحجب window.open
+            window.location.href = REAL_AD_URL;
         }
 
-        function grantReward(type) {
-            if (type === 'power') gameState.baseCpc += 1;
-            else if (type === 'double') gameState.cookies *= 2;
-            else if (type === 'frenzy') triggerFrenzy();
-            else if (type === 'autobot') gameState.autoCps += 1;
+        function applyReward(type) {
+            audio.playBuy();
+            if (type === 'power') {
+                gameState.baseCpc += 1;
+            } else if (type === 'double') {
+                gameState.cookies = (gameState.cookies || 1) * 2;
+                gameState.allTimeCookies *= 2;
+            } else if (type === 'frenzy') {
+                triggerFrenzy();
+            } else if (type === 'autobot') {
+                gameState.autoCps += 1;
+            }
             saveGame();
             updateUI();
+        }
+
+        /* --- WEB AUDIO API --- */
+        class AudioSystem {
+            constructor() { this.ctx = null; }
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+            }
+            playPop() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                const freq = 400 + Math.random() * 200;
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.8, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+            playBuy() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime);
+                osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(783.99, this.ctx.currentTime + 0.16);
+                gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+            playAscend() {
+                if (!gameState.soundEnabled) return;
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.5);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.5);
+            }
+        }
+
+        const audio = new AudioSystem();
+
+        /* --- CALCULATED STATS --- */
+        function getPrestigeMultiplier() { return 1 + (gameState.prestigeLevel * 0.25); }
+        function getClickValue() {
+            const frenzyMult = frenzyActive ? 5 : 1;
+            return Math.floor((gameState.baseCpc) * gameState.multiplier * getPrestigeMultiplier() * frenzyMult);
+        }
+        function getCpsValue() { return Math.floor(gameState.autoCps * getPrestigeMultiplier()); }
+
+        /* --- UPGRADES DATA --- */
+        const UPGRADES_DATA = [
+            {
+                id: 'clickPower',
+                title: 'Click Power +1',
+                desc: 'Increases base tap value by +1',
+                icon: 'fa-hand-pointer',
+                iconColor: 'text-amber-500',
+                costFormula: (lvl) => Math.floor(10 * Math.pow(1.5, lvl)),
+                apply: () => { gameState.baseCpc += 1; }
+            },
+            {
+                id: 'multiplier',
+                title: 'Cookie Multiplier (2x)',
+                desc: 'Doubles all click rewards!',
+                icon: 'fa-bolt',
+                iconColor: 'text-yellow-500',
+                costFormula: (lvl) => Math.floor(100 * Math.pow(2.2, lvl)),
+                apply: () => { gameState.multiplier *= 2; }
+            },
+            {
+                id: 'autobot',
+                title: 'Auto-Tapper Bot',
+                desc: 'Automatically taps +1 cookie/sec',
+                icon: 'fa-robot',
+                iconColor: 'text-blue-500',
+                costFormula: (lvl) => Math.floor(50 * Math.pow(1.4, lvl)),
+                apply: () => { gameState.autoCps += 1; }
+            },
+            {
+                id: 'frenzy',
+                title: 'Energy Frenzy',
+                desc: 'Triggers a 10s frenzy (5x click power)',
+                icon: 'fa-fire',
+                iconColor: 'text-red-500',
+                costFormula: (lvl) => Math.floor(200 * Math.pow(3.0, lvl)),
+                apply: () => { triggerFrenzy(); }
+            }
+        ];
+
+        const SHAPES = {
+            orb: `<svg class="w-full h-full text-amber-500" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="currentColor" stroke="#78350f" stroke-width="6"/>
+                    <circle cx="35" cy="35" r="8" fill="#78350f"/>
+                    <circle cx="65" cy="40" r="6" fill="#78350f"/>
+                    <circle cx="45" cy="65" r="7" fill="#78350f"/>
+                    <circle cx="65" cy="65" r="5" fill="#78350f"/>
+                    <circle cx="30" cy="25" r="6" fill="#fef3c7" opacity="0.6"/>
+                  </svg>`,
+            star: `<svg class="w-full h-full text-yellow-400" viewBox="0 0 100 100">
+                    <polygon points="50,5 64,36 98,36 70,57 81,91 50,70 19,91 30,57 2,36 36,36" fill="currentColor" stroke="#d97706" stroke-width="5"/>
+                   </svg>`,
+            gem: `<svg class="w-full h-full text-emerald-400" viewBox="0 0 100 100">
+                    <polygon points="30,10 70,10 90,40 50,90 10,40" fill="currentColor" stroke="#047857" stroke-width="5"/>
+                    <polygon points="30,10 50,40 70,10" fill="#a7f3d0" opacity="0.5"/>
+                  </svg>`,
+            badge: `<svg class="w-full h-full text-indigo-500" viewBox="0 0 100 100">
+                    <path d="M50 5 L85 25 L85 65 L50 95 L15 65 L15 25 Z" fill="currentColor" stroke="#3730a3" stroke-width="5"/>
+                    <circle cx="50" cy="50" r="20" fill="#e0e7ff"/>
+                  </svg>`
+        };
+
+        const THEMES = [
+            { id: 'daytime', name: 'Cartoon Sun', color: 'bg-sky-400' },
+            { id: 'candy', name: 'Neon Candy', color: 'bg-pink-400' },
+            { id: 'forest', name: 'Forest Run', color: 'bg-emerald-600' },
+            { id: 'cyber', name: 'Cyber Retro', color: 'bg-slate-900' }
+        ];
+
+        const FONTS = [
+            { id: 'cartoon', name: 'Chunky', fontClass: 'font-cartoon' },
+            { id: 'rounded', name: 'Rounded', fontClass: 'font-rounded' },
+            { id: 'clean', name: 'Clean', fontClass: 'font-clean' },
+            { id: 'pixel', name: 'Retro Pixel', fontClass: 'font-pixel' }
+        ];
+
+        /* --- UI RENDER & UPDATE FUNCTIONS --- */
+        function updateUI() {
+            document.getElementById('score-display').innerText = gameState.cookies.toLocaleString();
+            document.getElementById('cpc-display').innerText = getClickValue().toLocaleString();
+            document.getElementById('cps-display').innerText = getCpsValue().toLocaleString();
+
+            document.getElementById('stat-total-taps').innerText = gameState.totalTaps.toLocaleString();
+            document.getElementById('stat-all-time').innerText = gameState.allTimeCookies.toLocaleString();
+            document.getElementById('stat-prestige-level').innerText = gameState.prestigeLevel;
+            document.getElementById('stat-prestige-boost').innerText = `+${gameState.prestigeLevel * 25}%`;
+
+            const reqCookies = 10000 * Math.pow(2, gameState.prestigeLevel);
+            document.getElementById('prestige-req-text').innerText = `Requires ${reqCookies.toLocaleString()} All-Time Cookies`;
+            document.getElementById('btn-prestige').disabled = gameState.allTimeCookies < reqCookies;
+
+            document.getElementById('prestige-multiplier-tag').innerText = `Bonus: +${gameState.prestigeLevel * 25}%`;
+
+            renderUpgrades();
+        }
+
+        function renderTargetShape() {
+            const container = document.getElementById('target-shape-container');
+            container.innerHTML = SHAPES[gameState.selectedShape] || SHAPES.orb;
+        }
+
+        function renderUpgrades() {
+            const list = document.getElementById('upgrades-list');
+            list.innerHTML = '';
+
+            UPGRADES_DATA.forEach(upg => {
+                const currentLvl = gameState.upgrades[upg.id]?.level || 0;
+                const cost = upg.costFormula(currentLvl);
+                const canAfford = gameState.cookies >= cost;
+
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-xl border-2 flex items-center justify-between transition-all ${
+                    canAfford ? 'bg-white/80 border-amber-300 hover:border-amber-500' : 'bg-gray-100/70 border-gray-200 opacity-70'
+                }`;
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-xl ${upg.iconColor}">
+                            <i class="fa-solid ${upg.icon}"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-sm text-slate-800">${upg.title} <span class="text-xs text-amber-600">(Lvl ${currentLvl})</span></div>
+                            <div class="text-xs text-slate-500">${upg.desc}</div>
+                        </div>
+                    </div>
+                    <button class="btn-cartoon px-3 py-1.5 rounded-lg font-bold text-xs flex flex-col items-center min-w-[80px] ${
+                        canAfford ? 'bg-amber-500 text-white shadow-md' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }" ${!canAfford ? 'disabled' : ''}>
+                        <span>BUY</span>
+                        <span class="text-[10px] font-normal"><i class="fa-solid fa-cookie"></i> ${cost.toLocaleString()}</span>
+                    </button>
+                `;
+
+                item.querySelector('button').addEventListener('click', () => buyUpgrade(upg.id));
+                list.appendChild(item);
+            });
+        }
+
+        function renderCustomizationOptions() {
+            const shapesBox = document.getElementById('shapes-selector');
+            shapesBox.innerHTML = '';
+            Object.keys(SHAPES).forEach(key => {
+                const btn = document.createElement('button');
+                btn.className = `btn-cartoon p-2 rounded-xl border-2 flex items-center justify-center h-14 ${
+                    gameState.selectedShape === key ? 'border-amber-500 bg-amber-100' : 'border-gray-200 bg-white/60'
+                }`;
+                btn.innerHTML = `<div class="w-10 h-10">${SHAPES[key]}</div>`;
+                btn.onclick = () => {
+                    gameState.selectedShape = key;
+                    renderTargetShape();
+                    renderCustomizationOptions();
+                    saveGame();
+                };
+                shapesBox.appendChild(btn);
+            });
+
+            const themesBox = document.getElementById('themes-selector');
+            themesBox.innerHTML = '';
+            THEMES.forEach(t => {
+                const btn = document.createElement('button');
+                btn.className = `btn-cartoon p-2 rounded-xl border-2 flex items-center gap-2 text-xs font-bold ${
+                    gameState.selectedTheme === t.id ? 'border-amber-500 bg-amber-100' : 'border-gray-200 bg-white/60'
+                }`;
+                btn.innerHTML = `<span class="w-4 h-4 rounded-full ${t.color}"></span> ${t.name}`;
+                btn.onclick = () => {
+                    setTheme(t.id);
+                    renderCustomizationOptions();
+                    saveGame();
+                };
+                themesBox.appendChild(btn);
+            });
+
+            const fontsBox = document.getElementById('fonts-selector');
+            fontsBox.innerHTML = '';
+            FONTS.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = `btn-cartoon p-2 rounded-xl border-2 text-xs font-bold ${f.fontClass} ${
+                    gameState.selectedFont === f.id ? 'border-amber-500 bg-amber-100' : 'border-gray-200 bg-white/60'
+                }`;
+                btn.innerText = f.name;
+                btn.onclick = () => {
+                    setFont(f.id);
+                    renderCustomizationOptions();
+                    saveGame();
+                };
+                fontsBox.appendChild(btn);
+            });
+        }
+
+        function setTheme(themeId) {
+            gameState.selectedTheme = themeId;
+            document.body.classList.remove('theme-daytime', 'theme-candy', 'theme-forest', 'theme-cyber');
+            document.body.classList.add(`theme-${themeId}`);
+        }
+
+        function setFont(fontId) {
+            gameState.selectedFont = fontId;
+            document.body.classList.remove('font-cartoon', 'font-pixel', 'font-clean', 'font-rounded');
+            const fontObj = FONTS.find(f => f.id === fontId);
+            if (fontObj) document.body.classList.add(fontObj.fontClass);
+        }
+
+        function handleTap(e) {
+            const val = getClickValue();
+            gameState.cookies += val;
+            gameState.totalTaps += 1;
+            gameState.allTimeCookies += val;
+
+            audio.playPop();
+
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX ? e.clientX : (rect.left + rect.width / 2);
+            const y = e.clientY ? e.clientY : (rect.top + rect.height / 2);
+
+            spawnFloatingText(`+${val}`, x, y);
+            spawnParticles(x, y);
+
+            updateUI();
+        }
+
+        function spawnFloatingText(text, x, y) {
+            const el = document.createElement('div');
+            el.className = 'floating-num text-amber-300 text-2xl';
+            el.innerText = text;
+            const offsetX = (Math.random() - 0.5) * 40;
+            el.style.left = `${x + offsetX}px`;
+            el.style.top = `${y - 20}px`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 800);
+        }
+
+        function spawnParticles(x, y) {
+            const container = document.getElementById('particle-canvas');
+            for (let i = 0; i < 6; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'absolute w-3 h-3 rounded-full bg-yellow-300 pointer-events-none';
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                container.appendChild(particle);
+
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 40 + Math.random() * 60;
+                const destX = Math.cos(angle) * speed;
+                const destY = Math.sin(angle) * speed;
+
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${destX}px, ${destY}px) scale(0)`, opacity: 0 }
+                ], { duration: 500, easing: 'ease-out' }).onfinish = () => particle.remove();
+            }
+        }
+
+        function buyUpgrade(id) {
+            const upg = UPGRADES_DATA.find(u => u.id === id);
+            if (!upg) return;
+
+            const currentLvl = gameState.upgrades[id]?.level || 0;
+            const cost = upg.costFormula(currentLvl);
+
+            if (gameState.cookies >= cost) {
+                gameState.cookies -= cost;
+                gameState.upgrades[id].level = currentLvl + 1;
+                upg.apply();
+                audio.playBuy();
+                updateUI();
+                saveGame();
+            }
         }
 
         function triggerFrenzy() {
             frenzyActive = true;
+            document.getElementById('click-target').classList.add('frenzy-active');
             document.getElementById('frenzy-badge').classList.remove('hidden');
-            setTimeout(() => {
-                frenzyActive = false;
-                document.getElementById('frenzy-badge').classList.add('hidden');
-            }, 10000);
+            document.getElementById('frenzy-bar-container').classList.remove('hidden');
+
+            const progressBar = document.getElementById('frenzy-progress');
+            progressBar.style.width = '100%';
+
+            if (frenzyTimer) clearInterval(frenzyTimer);
+
+            let duration = 100;
+            frenzyTimer = setInterval(() => {
+                duration -= 1;
+                progressBar.style.width = `${duration}%`;
+
+                if (duration <= 0) {
+                    clearInterval(frenzyTimer);
+                    frenzyActive = false;
+                    document.getElementById('click-target').classList.remove('frenzy-active');
+                    document.getElementById('frenzy-badge').classList.add('hidden');
+                    document.getElementById('frenzy-bar-container').classList.add('hidden');
+                    updateUI();
+                }
+            }, 100);
         }
 
-        function saveGame() { localStorage.setItem('cartoon_clicker_save', JSON.stringify(gameState)); }
+        function ascendPrestige() {
+            const reqCookies = 10000 * Math.pow(2, gameState.prestigeLevel);
+            if (gameState.allTimeCookies < reqCookies) return;
 
-        function updateUI() {
-            document.getElementById('score-display').textContent = Math.floor(gameState.cookies);
-            document.getElementById('cpc-display').textContent = gameState.baseCpc * gameState.multiplier * (frenzyActive ? 5 : 1);
-            document.getElementById('cps-display').textContent = gameState.autoCps;
-            document.getElementById('stat-total-taps').textContent = gameState.totalTaps;
-            document.getElementById('stat-all-time').textContent = Math.floor(gameState.allTimeCookies);
-        }
+            gameState.prestigeLevel += 1;
+            gameState.cookies = 0;
+            gameState.baseCpc = 1;
+            gameState.multiplier = 1;
+            gameState.autoCps = 0;
 
-        document.querySelectorAll('.nav-tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const scene = btn.getAttribute('data-scene');
-                document.querySelectorAll('.scene-view').forEach(s => s.classList.remove('active'));
-                document.getElementById(`scene-${scene}`).classList.add('active');
+            Object.keys(gameState.upgrades).forEach(k => {
+                gameState.upgrades[k].level = 0;
             });
-        });
 
-        document.getElementById('click-target').addEventListener('click', () => {
-            const gain = gameState.baseCpc * gameState.multiplier * (frenzyActive ? 5 : 1);
-            gameState.cookies += gain;
-            gameState.allTimeCookies += gain;
-            gameState.totalTaps += 1;
-            updateUI();
+            audio.playAscend();
             saveGame();
-        });
+            updateUI();
+            switchScene('clicker');
+        }
 
-        setInterval(() => {
-            if (gameState.autoCps > 0) {
-                gameState.cookies += gameState.autoCps / 10;
-                gameState.allTimeCookies += gameState.autoCps / 10;
-                updateUI();
+        function switchScene(targetScene) {
+            if (targetScene === currentScene) return;
+
+            const scenes = ['clicker', 'upgrades', 'ads', 'custom', 'stats'];
+            const currentIndex = scenes.indexOf(currentScene);
+            const targetIndex = scenes.indexOf(targetScene);
+
+            const currentView = document.getElementById(`scene-${currentScene}`);
+            const targetView = document.getElementById(`scene-${targetScene}`);
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if (tab.dataset.scene === targetScene) {
+                    tab.classList.add('active-tab', 'bg-amber-100', 'text-amber-600', 'border', 'border-amber-300');
+                    tab.classList.remove('text-slate-500');
+                } else {
+                    tab.classList.remove('active-tab', 'bg-amber-100', 'text-amber-600', 'border', 'border-amber-300');
+                    tab.classList.add('text-slate-500');
+                }
+            });
+
+            if (targetIndex > currentIndex) {
+                currentView.classList.add('slide-left');
+                targetView.classList.remove('slide-right');
+            } else {
+                currentView.classList.add('slide-right');
+                targetView.classList.remove('slide-left');
             }
-        }, 100);
 
-        updateUI();
+            currentView.classList.remove('active');
+            targetView.classList.add('active');
+
+            currentScene = targetScene;
+        }
+
+        function saveGame() {
+            localStorage.setItem('cartoon_clicker_save', JSON.stringify(gameState));
+        }
+
+        function resetGame() {
+            if (confirm("Are you sure you want to reset all game progress?")) {
+                localStorage.removeItem('cartoon_clicker_save');
+                location.reload();
+            }
+        }
+
+        window.onload = () => {
+            setTheme(gameState.selectedTheme || 'daytime');
+            setFont(gameState.selectedFont || 'cartoon');
+            renderTargetShape();
+            renderCustomizationOptions();
+            updateUI();
+
+            const targetEl = document.getElementById('click-target');
+            targetEl.addEventListener('pointerdown', handleTap);
+
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', () => switchScene(tab.dataset.scene));
+            });
+
+            document.getElementById('btn-prestige').addEventListener('click', ascendPrestige);
+            document.getElementById('btn-reset').addEventListener('click', resetGame);
+
+            const soundBtn = document.getElementById('btn-sound-toggle');
+            soundBtn.addEventListener('click', () => {
+                gameState.soundEnabled = !gameState.soundEnabled;
+                soundBtn.innerHTML = `<i class="fa-solid ${gameState.soundEnabled ? 'fa-volume-high' : 'fa-volume-xmark'}"></i> Sound: ${gameState.soundEnabled ? 'ON' : 'OFF'}`;
+                saveGame();
+            });
+
+            setInterval(() => {
+                const autoVal = getCpsValue();
+                if (autoVal > 0) {
+                    gameState.cookies += autoVal;
+                    gameState.allTimeCookies += autoVal;
+                    updateUI();
+                }
+            }, 1000);
+
+            setInterval(saveGame, 5000);
+        };
     </script>
 </body>
 </html>
